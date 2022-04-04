@@ -1,19 +1,19 @@
 {
-  "name": "carbicle",
+  "name": "exam-prep1",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/ilianrusev/JS-Back-End.git"
+    "start": "nodemon"
   },
   "author": "",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/ilianrusev/JS-Back-End/issues"
-  },
-  "homepage": "https://github.com/ilianrusev/JS-Back-End#readme"
+  "dependencies": {
+    "bcrypt": "^5.0.1",
+    "express": "^4.17.3",
+    "express-handlebars": "^6.0.3",
+    "express-session": "^1.17.2",
+    "express-validator": "^6.14.0",
+    "mongoose": "^6.2.9"
+  }
 }
