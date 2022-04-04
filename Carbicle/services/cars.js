@@ -79,6 +79,7 @@ async function attachAccessory(carId, accessoryId, ownerId) {
     existing.accessories.push(accessoryId);
 
     await existing.save();
+    return true;
 }
 
 module.exports = () => (req, res, next) => {

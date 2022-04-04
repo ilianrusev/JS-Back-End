@@ -273,6 +273,10 @@ footer {
     border-radius: 5px;
 }
 
+.description {
+    display: none;
+}
+
 
 /*Animations & Transitions
 */

@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 require('./Car');
 require('./Accessory');
 
-const connectionString = 'mongodb://localhost:27017/carbicle'
+const connectionString = 'mongodb://0.0.0.0:27017/carbicle'
 
 async function init(){
     try {
