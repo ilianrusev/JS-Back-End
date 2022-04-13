@@ -1,5 +1,7 @@
 const mongoose = require('mongoose')
 
+require('../models/User')
+
 const dbName = 'wildlife'
 const connectionString = `mongodb://0.0.0.0:27017/${dbName}`
 
