@@ -1,0 +1,11 @@
+{
+  "name": "wildlife-photography",
+  "version": "1.0.0",
+  "description": "exam-prep",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "IR",
+  "license": "ISC"
+}
