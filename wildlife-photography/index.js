@@ -13,4 +13,4 @@ async function start() {
 
     app.listen(3000, () => 'Server running on port 3000')
 
-}
+};
