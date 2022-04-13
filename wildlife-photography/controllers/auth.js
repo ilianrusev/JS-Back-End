@@ -1,4 +1,5 @@
 const { register, login } = require('../services/user');
+const mapErrors = require('../util/mappers');
 
 const router = require('express').Router();
 
@@ -16,7 +17,8 @@ router.post('/register', async (req, res) => {
         res.redirect('/')
     } catch (err) {
         console.log(err);
-        res.render('register', { layout: false, data: { username: req.body.username } });
+        const errors = mapErrors(err)
+        res.render('register', { layout: false, data: { username: req.body.username }, errors });
     }
 })
 
@@ -31,7 +33,8 @@ router.post('/login', async (req, res) => {
         res.redirect('/')
     } catch (err) {
         console.log(err);
-        res.render('login', { layout: false, data: { username: req.body.username } });
+        const errors = mapErrors(err)
+        res.render('login', { layout: false, data: { username: req.body.username }, errors });
     }
 })
 
