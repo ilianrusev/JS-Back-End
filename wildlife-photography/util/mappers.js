@@ -20,9 +20,17 @@ function postViewModel(post) {
         date: post.date,
         image: post.image,
         description: post.description,
-        author: post.author,
+        author: authorViewModel(post.author),//if you use .lean() in services you don't need authorViewModel'
         votes: post.votes,
         rating: post.rating,
+    }
+}
+
+function authorViewModel(user) {
+    return {
+        _id: user._id,
+        firstName: user.firstName,
+        lastName: user.lastName
     }
 }
 

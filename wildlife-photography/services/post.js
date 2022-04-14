@@ -9,11 +9,17 @@ async function createPost(post) {
     return result;
 }
 
-async function getPosts(){
+async function getPosts() {
     return Post.find({});  //here you can use .lean() instead of postViewModel
 }
 
-module.exports ={
+async function getPostById(id) {
+    return Post.findById(id).populate('author','firstName lastName');
+    //here you can use .lean() instead of authorViewModel
+}
+
+module.exports = {
     createPost,
     getPosts,
+    getPostById,
 }
