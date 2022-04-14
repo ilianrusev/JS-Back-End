@@ -29,7 +29,7 @@ async function login(email, password) {
         throw new Error('Incorrect email or password');
     }
 
-    const hasMatch = compare(password, user.hashedPassword);
+    const hasMatch = await compare(password, user.hashedPassword);
 
     if (!hasMatch) {
         throw new Error('Incorrect email or password');
