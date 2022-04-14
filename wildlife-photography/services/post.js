@@ -13,8 +13,14 @@ async function getPosts() {
     return Post.find({});  //here you can use .lean() instead of postViewModel
 }
 
+async function getPostsByAuthor(userId) {
+    return Post.find({ author: userId }).populate('author', 'firstName lastName')
+}
+
 async function getPostById(id) {
-    return Post.findById(id).populate('author', 'firstName lastName');
+    return Post.findById(id)
+        .populate('author', 'firstName lastName')
+        .populate('votes', 'email');
     //here you can use .lean() instead of authorViewModel
 }
 
@@ -57,4 +63,5 @@ module.exports = {
     updatePost,
     deletePost,
     vote,
+    getPostsByAuthor,
 }
