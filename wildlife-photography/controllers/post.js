@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const { isUser } = require('../middleware/guards');
-const { createPost, getPostById, updatePost } = require('../services/post');
+const { createPost, getPostById, updatePost, deletePost, vote } = require('../services/post');
 const { mapErrors, postViewModel } = require('../util/mappers');
 
 
@@ -34,7 +34,6 @@ router.get('/edit/:id', isUser(), async (req, res) => {
     const id = req.params.id;
     const post = postViewModel(await getPostById(id));  //if you use .lean() in the post service, you dont have to map to model 
 
-
     if (req.session.user._id != post.author._id) {
         return res.redirect('/login')
     }
@@ -44,6 +43,12 @@ router.get('/edit/:id', isUser(), async (req, res) => {
 
 router.post('/edit/:id', isUser(), async (req, res) => {
     const id = req.params.id;
+    const existing = postViewModel(await getPostById(id));  //if you use .lean() in the post service, you dont have to map to model 
+
+
+    if (req.session.user._id != existing.author._id) {
+        return res.redirect('/login')
+    }
 
     const post = {
         title: req.body.title,
@@ -62,6 +67,40 @@ router.post('/edit/:id', isUser(), async (req, res) => {
         const errors = mapErrors(err)
         post._id = id;
         res.render('edit', { title: 'Edit Page', post, errors })
+    }
+
+})
+
+router.get('/delete/:id', isUser(), async (req, res) => {
+    const id = req.params.id;
+    const existing = postViewModel(await getPostById(id));  //if you use .lean() in the post service, you dont have to map to model 
+
+    if (req.session.user._id != existing.author._id) {
+        return res.redirect('/login')
+    }
+
+    try {
+        await deletePost(id);
+        res.redirect('/catalog')
+    } catch (err) {
+        console.log(err);
+        const errors = mapErrors(err)
+        res.render('details', { title: existing.title, errors })
+    }
+})
+
+
+router.get('/vote/:id/:type', isUser(), async (req, res) => {
+    const id = req.params.id;
+    const value = req.params.type == 'upvote' ? 1 : -1;
+
+    try {
+        await vote(id, req.session.user._id, value);
+        res.redirect('/catalog/' + id)
+    } catch (err) {
+        console.log(err);
+        const errors = mapErrors(err)
+        res.render('details', { title: 'Post Details', errors })
     }
 
 })

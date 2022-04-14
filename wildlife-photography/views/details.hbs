@@ -31,8 +31,8 @@
                         <p class="thanks-for-vote">Thanks For Voting</p>
                         {{else}}
                         <!-- logged in users, who have not yet voted-->
-                        <a href="#" class="vote-up">UpVote +1</a>
-                        <a href="#" class="vote-down">DownVote -1</a>
+                        <a href="/vote/{{_id}}/upvote" class="vote-up">UpVote +1</a>
+                        <a href="/vote/{{_id}}/downvote" class="vote-down">DownVote -1</a>
                         {{/if}}
 
                         {{/if}}

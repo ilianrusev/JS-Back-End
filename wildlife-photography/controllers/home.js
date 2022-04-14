@@ -22,9 +22,10 @@ router.get('/catalog/:id', async (req, res) => {
         post.hasUser = true;
         if (req.session.user._id == post.author._id) {
             post.isAuthor = true;
-
+        } else {
+            post.hasVoted = post.votes.includes(req.session.user._id);
         }
-        
+
     }
 
     res.render('details', { title: post.title, post })
