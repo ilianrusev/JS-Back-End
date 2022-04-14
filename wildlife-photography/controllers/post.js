@@ -1,7 +1,7 @@
 const router = require('express').Router();
 const { isUser } = require('../middleware/guards');
-const { createPost } = require('../services/post');
-const {mapErrors} = require('../util/mappers');
+const { createPost, getPostById, updatePost } = require('../services/post');
+const { mapErrors, postViewModel } = require('../util/mappers');
 
 
 router.get('/create', isUser(), (req, res) => {
@@ -28,7 +28,42 @@ router.post('/create', isUser(), async (req, res) => {
         const errors = mapErrors(err);
         res.render('create', { title: 'Create Page', errors, data: post })
     }
+});
+
+router.get('/edit/:id', isUser(), async (req, res) => {
+    const id = req.params.id;
+    const post = postViewModel(await getPostById(id));  //if you use .lean() in the post service, you dont have to map to model 
+
+
+    if (req.session.user._id != post.author._id) {
+        return res.redirect('/login')
+    }
+
+    res.render('edit', { title: 'Edit Post', post })
 })
 
+router.post('/edit/:id', isUser(), async (req, res) => {
+    const id = req.params.id;
+
+    const post = {
+        title: req.body.title,
+        keyword: req.body.keyword,
+        location: req.body.location,
+        date: req.body.date,
+        image: req.body.image,
+        description: req.body.description,
+    };
+
+    try {
+        await updatePost(id, post);
+        res.redirect('/catalog/' + id)
+    } catch (err) {
+        console.log(err);
+        const errors = mapErrors(err)
+        post._id = id;
+        res.render('edit', { title: 'Edit Page', post, errors })
+    }
+
+})
 
 module.exports = router;
