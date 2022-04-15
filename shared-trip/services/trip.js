@@ -11,9 +11,17 @@ async function createTrip(trip) {
     return result;
 }
 
+async function getTripById(id) {
+    return Trip.findById(id)
+        .populate('creator', 'email')
+        .populate('buddies', 'email')
+        .lean()
+}
+
 
 module.exports = {
     getTrips,
     createTrip,
+    getTripById,
 
 }

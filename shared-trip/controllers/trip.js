@@ -1,5 +1,5 @@
 const { isUser } = require('../middleware/guards');
-const { getTrips, createTrip } = require('../services/trip');
+const { getTrips, createTrip, getTripById } = require('../services/trip');
 const mapErrors = require('../util/errorMapper');
 
 const router = require('express').Router();
@@ -38,5 +38,31 @@ router.post('/create', isUser(), async (req, res) => {
         res.render('create', { title: 'Create Page', errors, data: trip })
     }
 });
+
+router.get('/details/:id', async (req, res) => {
+    const id = req.params.id;
+    const trip = await getTripById(id);
+
+    if (req.session.user) {
+        trip.hasUser = true;
+        if (trip.seats > 0) {
+            trip.hasSeats = true;
+        }
+        if (req.session.user._id == trip.creator._id) {
+            trip.isCreator = true;
+        } else {
+            trip.notCreator = true;
+            trip.hasJoined = trip.buddies.find(v => v._id == req.session.user._id) != undefined;
+        }
+
+    }
+
+    res.render('details', { title: 'Details Page', trip })
+
+})
+
+router.get('*', (req, res) => {
+    res.render('404', { title: '404' })
+})
 
 module.exports = router;
