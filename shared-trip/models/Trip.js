@@ -2,15 +2,15 @@ const { Schema, model, Types: { ObjectId } } = require('mongoose')
 
 
 const tripSchema = new Schema({
-    start: { type: String, required: true },
-    end: { type: String, required: true },
-    date: { type: String, required: true },
-    time: { type: String, required: true },
-    image: { type: String, required: true },
-    brand: { type: String, required: true },
-    seats: { type: Number, required: true },
-    price: { type: Number, required: true },
-    description: { type: String, required: true },
+    start: { type: String, required: [true, 'Start point is required'] },
+    end: { type: String, required: [true, 'End point is required'] },
+    date: { type: String, required: [true, 'Date  is required'] },
+    time: { type: String, required: [true, 'Time is required'] },
+    image: { type: String, required: [true, 'Car image is required'] },
+    brand: { type: String, required: [true, 'Car brand is required'] },
+    seats: { type: Number, required: [true, 'Seats number is required'] },
+    price: { type: Number, required: [true, 'Price is required'] },
+    description: { type: String, required: [true, 'Description point is required'] },
     creator: { type: ObjectId, ref: 'User', required: true },
     buddies: { type: [ObjectId], ref: 'User', default: [] }
 })
