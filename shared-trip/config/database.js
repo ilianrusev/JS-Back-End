@@ -1,6 +1,10 @@
 const mongoose = require('mongoose')
 
-const dbName = 'shared-trip'
+require('../models/Trip')
+require('../models/User')
+
+
+const dbName = 'sharedTrip'
 
 const connectionString = `mongodb://0.0.0.0:27017/${dbName}`
 
