@@ -10,7 +10,7 @@ const tripSchema = new Schema({
     brand: { type: String, required: [true, 'Car brand is required'] },
     seats: { type: Number, required: [true, 'Seats number is required'] },
     price: { type: Number, required: [true, 'Price is required'] },
-    description: { type: String, required: [true, 'Description point is required'] },
+    description: { type: String, required: [true, 'Description is required'] },
     creator: { type: ObjectId, ref: 'User', required: true },
     buddies: { type: [ObjectId], ref: 'User', default: [] }
 })

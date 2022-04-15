@@ -52,7 +52,7 @@ router.post('/login', async (req, res) => {
     }
 })
 
-router.get('/logout', isGuest(), isUser(), (req, res) => {
+router.get('/logout', isUser(), isUser(), (req, res) => {
     delete req.session.user;
     res.redirect('/')
 })
