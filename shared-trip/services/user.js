@@ -13,7 +13,7 @@ async function register(email, password, gender) {
     const user = new User({
         email,
         gender,
-        tripHistory,
+        tripHistory: [],
         hashedPassword,
     })
 
@@ -26,13 +26,13 @@ async function login(email, password) {
     const user = await getUserByEmail(email);
 
     if (!user) {
-        throw new Error('Incorrect email or password')
+        throw new Error('user does not exist')
     }
 
     const hasMatch = await compare(password, user.hashedPassword);
 
     if (!hasMatch) {
-        throw new Error('Incorrect email or password')
+        throw new Error('Incorrect  password')
     }
 
     return user;
@@ -40,7 +40,6 @@ async function login(email, password) {
 
 async function getUserByEmail(email) {
     const user = User.findOne({ email: new RegExp(`^${email}$`, 'i') })
-
     return user
 }
 
