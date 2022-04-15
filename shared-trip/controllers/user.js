@@ -37,7 +37,7 @@ router.get('/login', isGuest(), (req, res) => {
     res.render('login', { title: 'Login Page' })
 })
 
-router.post('/login', isGuest(), async (req, res) => {
+router.post('/login', async (req, res) => {
     try {
         const user = await login(req.body.email, req.body.password)
         req.session.user = user
@@ -52,7 +52,7 @@ router.post('/login', isGuest(), async (req, res) => {
     }
 })
 
-router.get('/logout', isUser(), (req, res) => {
+router.get('/logout', isGuest(), isUser(), (req, res) => {
     delete req.session.user;
     res.redirect('/')
 })

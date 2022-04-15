@@ -11,7 +11,7 @@ function isUser() {
 function isGuest() {
     return function (req, res, next) {
         if (req.session.user) {
-            res.redirect('/login')
+            res.redirect('/')
         } else {
             next()
         }
