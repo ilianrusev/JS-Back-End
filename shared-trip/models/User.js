@@ -2,15 +2,10 @@ const { Schema, model, Types: { ObjectId } } = require('mongoose')
 
 
 const userSchema = new Schema({
-    email: { type: String, required: true },
+    email: { type: String, required: [true, 'Email is required'] },
     gender: {
         type: String,
-        validate: {
-            validator(value) {
-                return (value == 'male' || value == 'female')
-            },
-            message: 'Gender must be male or female.'
-        }
+        required: [true, 'Gennder is required. Please choose "male" or "female"'],
     },
     tripHistory: { type: [ObjectId], ref: 'Trip', default: [] },
     hashedPassword: { type: String, required: true }

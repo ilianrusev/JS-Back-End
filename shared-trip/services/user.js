@@ -26,13 +26,13 @@ async function login(email, password) {
     const user = await getUserByEmail(email);
 
     if (!user) {
-        throw new Error('user does not exist')
+        throw new Error('Incorrect email or password')
     }
 
     const hasMatch = await compare(password, user.hashedPassword);
 
     if (!hasMatch) {
-        throw new Error('Incorrect  password')
+        throw new Error('Incorrect email or password')
     }
 
     return user;
