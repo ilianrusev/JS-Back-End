@@ -1,5 +1,5 @@
 const { isUser } = require('../middleware/guards');
-const { getTrips, createTrip, getTripById, deleteTrip, editTrip } = require('../services/trip');
+const { getTrips, createTrip, getTripById, deleteTrip, editTrip, joinTrip } = require('../services/trip');
 const mapErrors = require('../util/errorMapper');
 
 const router = require('express').Router();
@@ -43,6 +43,7 @@ router.get('/details/:id', async (req, res) => {
     const id = req.params.id;
     const trip = await getTripById(id);
 
+
     if (req.session.user) {
         trip.hasUser = true;
         if (trip.seats > 0) {
@@ -63,9 +64,9 @@ router.get('/details/:id', async (req, res) => {
 
 router.get('/delete/:id', isUser(), async (req, res) => {
     const id = req.params.id;
-    const existing = await getTripById(id)
+    const trip = await getTripById(id)
 
-    if (req.session.user._id != existing.creator._id) {
+    if (req.session.user._id != trip.creator._id) {
         return res.redirect('/login')
     }
 
@@ -75,7 +76,7 @@ router.get('/delete/:id', isUser(), async (req, res) => {
     } catch (err) {
         console.log(err);
         const errors = mapErrors(err)
-        res.render('details', { title: 'Details Page', errors })
+        res.render('details', { title: 'Details Page', errors, trip })
     }
 
 })
@@ -119,6 +120,20 @@ router.post('/edit/:id', isUser(), async (req, res) => {
         console.log(err);
         const errors = mapErrors(err)
         res.render('edit', { title: 'Edit Page', trip, errors })
+    }
+})
+
+router.get('/join/:id', isUser(), async (req, res) => {
+    const tripId = req.params.id
+    const userId = req.session.user._id
+
+    try {
+        await joinTrip(tripId, userId)
+        res.redirect('/details/' + tripId)
+    } catch (err) {
+        console.log(err);
+        const errors = mapErrors(err)
+        res.render('404', { title: '404 Page' })
     }
 })
 

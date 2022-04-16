@@ -1,4 +1,6 @@
 const Trip = require('../models/Trip')
+const User = require('../models/User')
+
 
 async function getTrips() {
     return Trip.find({}).lean()
@@ -13,8 +15,8 @@ async function createTrip(trip) {
 
 async function getTripById(id) {
     return Trip.findById(id)
-        .populate('creator', 'email')
-        .populate('buddies', 'email')
+        .populate({ path: 'creator', select: 'email' })
+        .populate({ path: 'buddies', select: 'email' })
         .lean()
 }
 
@@ -38,11 +40,28 @@ async function deleteTrip(id) {
     return Trip.findByIdAndDelete(id)
 }
 
+async function joinTrip(tripId, userId) {
+    const trip = await Trip.findById(tripId);
+    const user = await User.findById(userId);
+
+    if (trip.buddies.includes(user.email)) {
+        throw new Error('User has already joined')
+    }
+
+    trip.buddies.push(user)
+    trip.seats -= 1
+
+    await trip.save();
+
+}
+
 
 module.exports = {
     getTrips,
     createTrip,
     getTripById,
     editTrip,
-    deleteTrip
+    deleteTrip,
+    joinTrip
+
 }
