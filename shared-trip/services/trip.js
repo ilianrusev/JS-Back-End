@@ -44,7 +44,7 @@ async function joinTrip(tripId, userId) {
     const trip = await Trip.findById(tripId);
     const user = await User.findById(userId);
 
-    if (trip.buddies.includes(user.email)) {
+    if (trip.buddies.includes(user)) {
         throw new Error('User has already joined')
     }
 

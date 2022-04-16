@@ -57,5 +57,7 @@ router.get('/logout', isUser(), isUser(), (req, res) => {
     res.redirect('/')
 })
 
+
+
 module.exports = router;
 

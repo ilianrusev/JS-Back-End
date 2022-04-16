@@ -1,4 +1,6 @@
 const User = require('../models/User');
+const Trip = require('../models/Trip');
+
 const { compare, hash } = require('bcrypt')
 
 async function register(email, password, gender) {
@@ -43,8 +45,27 @@ async function getUserByEmail(email) {
     return user
 }
 
+async function getUserById(id) {
+    const user = await User.findById(id)
+        .populate('tripHistory','start end time date')
+        .lean()
+
+    return user;
+}
+
+async function addTrip(userId, tripId) {
+    const user = await User.findOne({ _id: userId })
+    const trip = await Trip.findById(tripId);
+
+    user.tripHistory.push(trip)
+
+    user.save()
+}
+
 
 module.exports = {
     login,
     register,
+    addTrip,
+    getUserById
 }
