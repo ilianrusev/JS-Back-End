@@ -37,7 +37,7 @@ router.post('/create', isUser(), async (req, res) => {
 
         await addTrip(userId, newTrip._id)
 
-        res.redirect('/')
+        res.redirect('/trips')
     } catch (err) {
         console.log(err);
         const errors = mapErrors(err)
@@ -125,6 +125,7 @@ router.post('/edit/:id', isUser(), async (req, res) => {
     } catch (err) {
         console.log(err);
         const errors = mapErrors(err)
+        trip._id = id
         res.render('edit', { title: 'Edit Page', trip, errors })
     }
 })
