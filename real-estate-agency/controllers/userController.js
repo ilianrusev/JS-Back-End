@@ -49,7 +49,7 @@ router.post('/register', isGuest(), async (req, res) => {
 
 router.get('/logout', isUser(), (req, res) => {
     delete req.session.user;
-    res.redirect('/login');
+    res.redirect('/');
 })
 
 
