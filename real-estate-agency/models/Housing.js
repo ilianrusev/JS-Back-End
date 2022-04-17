@@ -12,3 +12,7 @@ const housingSchema = new Schema({
     rens: { type: [ObjectId], ref: 'User' },
     owner: { type: ObjectId, ref: 'User' }
 })
+
+const Housing = model('Housing', housingSchema)
+
+module.exports = Housing;
