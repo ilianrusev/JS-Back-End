@@ -1,0 +1,53 @@
+{{#with listing}}
+<section id="deatils-page">
+    <div class="wrapper">
+        <div class="product-img">
+            <img src="{{image}}">
+        </div>
+        <div class="product-info">
+            <div class="product-text">
+                <div class="product-text">
+                    <h1>Name: {{name}}</h1>
+                    <h2>Type: {{type}}</h2>
+                    <h4>Year: {{year}}</h4>
+                    <h4>City: {{city}}</h4>
+                    <p>Description: {{description}}</p>
+                    {{#if rents}}
+                    <!-- if there are already tenants of the housing, separate their names with a comma and a space ", "  -->
+                    <p>People rented this housing: Alex Petkov, Ivan Dobrev</p>
+                    {{else}}
+                    <!-- If not display: -->
+                    <p>People rented this housing: There are no tenants yet.</p>
+                    {{/if}}
+                </div>
+            </div>
+            {{#if hasUser}}
+            <!-- if there is no registered user, do not display buttons-->
+            <div class="product-btn">
+                <!-- Only for registered user and creator of the housing offer-->
+                {{#if isOwner}}
+                <a href="/edit/{{_id}}" class="edit">Edit</a>
+                <a href="/delete/{{_id}}" class="remove">Delete</a>
+                {{/if}}
+
+                {{#if notOwner}}
+                {{#if hasRented}}
+                <!-- logged in user with available pieces-->
+                <p class="alRentHome">You have already rent this home</p>
+                {{else}}
+                {{#if hasSpace}}
+                <a href="#" class="rentHome">Rent a home, available {{pieces}} housing</a>
+
+                {{else}}
+                <!-- logged in user with no available pieces-->
+                <p class="no-housing">No Housing Available!</p>
+                {{/if}}
+                {{/if}}
+
+                {{/if}}
+            </div>
+            {{/if}}
+        </div>
+    </div>
+</section>
+{{/with}}

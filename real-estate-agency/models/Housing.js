@@ -9,8 +9,8 @@ const housingSchema = new Schema({
     image: { type: String, required: true },
     description: { type: String, required: true },
     pieces: { type: Number, required: true },
-    rents: { type: [ObjectId], ref: 'User' },
-    owner: { type: ObjectId, ref: 'User' }
+    rents: { type: [ObjectId], ref: 'User', default: [] },
+    owner: { type: ObjectId, ref: 'User', required: true }
 })
 
 const Housing = model('Housing', housingSchema)

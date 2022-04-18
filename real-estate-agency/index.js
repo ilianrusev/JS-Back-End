@@ -7,6 +7,7 @@ start()
 
 async function start() {
     const app = express();
+    
     expressConfig(app);
     await dbConfig(app);
     routesConfig(app);

@@ -1,5 +1,8 @@
 const mongoose = require('mongoose')
 
+require('../models/Housing')
+require('../models/User')
+
 const dbName = 'real-estate'
 
 const connectionString = `mongodb://0.0.0.0:27017/${dbName}`
