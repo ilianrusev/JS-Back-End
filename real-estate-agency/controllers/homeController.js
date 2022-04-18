@@ -1,0 +1,12 @@
+const { getLastListings } = require('../services/housingService');
+
+const router = require('express').Router();
+
+
+router.get('/', async (req, res) => {
+    const listings = await getLastListings();
+
+    res.render('home', { title: 'Listings', listings })
+})
+
+module.exports = router

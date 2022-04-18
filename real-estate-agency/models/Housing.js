@@ -9,7 +9,7 @@ const housingSchema = new Schema({
     image: { type: String, required: true },
     description: { type: String, required: true },
     pieces: { type: Number, required: true },
-    rens: { type: [ObjectId], ref: 'User' },
+    rents: { type: [ObjectId], ref: 'User' },
     owner: { type: ObjectId, ref: 'User' }
 })
 

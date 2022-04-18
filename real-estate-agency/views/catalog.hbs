@@ -1,31 +1,17 @@
-<section id="home-page" class="background-image">
-    <div class="home-container">
+<section id="all-listings">
+    <h1>Apartments for recents</h1>
+    <!-- If there are offers for housing in the database display each of them -->
+    {{#if listings}}
 
-        <div class="info">
-            <h1>Discover Your Perfect Home</h1>
-            <h2>The Best Real Estate Deals</h2>
-        </div>
+    {{#each listings}}
+    {{>catalog}}
+    {{/each}}
 
+
+    <!-- If there are still no offers for housing in the database display: -->
+    {{else}}
+    <div class="no-data-listing">
+        <p class="no-offer">There are no housing offers found...</p>
     </div>
-</section>
-
-<section id="top-houses">
-    <h1>Top Houses</h1>
-    <div class="houses">
-
-        {{#if listings}}
-
-        {{#each listings}}
-
-        {{> home}}
-
-        {{/each}}
-        {{else}}
-        <!-- If there are still no offers for housing in the database display: -->
-        <div class="no-data-container">
-            <p class="no-data">There are no housing offers found...</p>
-        </div>
-
-        {{/if}}
-    </div>
+    {{/if}}
 </section>
