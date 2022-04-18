@@ -20,7 +20,27 @@ async function createListing(listing) {
 async function getListingById(id) {
     return Housing.findById(id)
         .populate({ path: 'owner', select: 'name username' })
+        .populate({ path: 'rents', select: 'name' })
         .lean()
+}
+
+async function editListing(id, listing) {
+    const existing = await Housing.findById(id)
+
+    existing.name = listing.name
+    existing.type = listing.type
+    existing.year = listing.year
+    existing.city = listing.city
+    existing.image = listing.image
+    existing.description = listing.description
+    existing.pieces = listing.pieces
+
+    await existing.save()
+
+}
+
+async function deleteListing(id) {
+    return Housing.findByIdAndDelete(id)
 }
 
 
@@ -30,4 +50,6 @@ module.exports = {
     createListing,
     getLastListings,
     getListingById,
+    editListing,
+    deleteListing,
 }

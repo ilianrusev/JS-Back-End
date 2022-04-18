@@ -1,4 +1,4 @@
-const { createListing, getListings, getListingById } = require('../services/housingService');
+const { createListing, getListings, getListingById, editListing, deleteListing } = require('../services/housingService');
 const mapErrors = require('../util/errorMapper');
 
 const router = require('express').Router();
@@ -58,6 +58,64 @@ router.get('/details/:id', async (req, res) => {
 
     res.render('details', { title: 'Details Page', listing })
 
+})
+
+router.get('/edit/:id', async (req, res) => {
+    const listingId = req.params.id
+    const listing = await getListingById(listingId)
+
+    if (req.session.user._id != listing.owner._id) {
+        return res.redirect('/login')
+    }
+
+    res.render('edit', { title: 'Edit Page', listing })
+})
+
+router.post('/edit/:id', async (req, res) => {
+    const listingId = req.params.id
+    const existing = await getListingById(listingId)
+
+    if (req.session.user._id != existing.owner._id) {
+        return res.redirect('/login')
+    }
+
+    const listing = {
+        name: req.body.name,
+        type: req.body.type,
+        year: req.body.year,
+        city: req.body.city,
+        image: req.body.image,
+        description: req.body.description,
+        pieces: req.body.pieces
+    }
+
+    try {
+        await editListing(listingId, listing)
+        res.redirect('/details/' + listingId)
+    } catch (err) {
+        console.log(err);
+        const errors = mapErrors(err);
+        listing._id = listingId;
+        res.render('edit', { title: 'Edit Page', errors, data: listing })
+    }
+})
+
+router.get('/delete/:id', async (req, res) => {
+    const listingId = req.params.id
+    const listing = await getListingById(listingId)
+
+    if (req.session.user._id != existing.owner._id) {
+        return res.redirect('/login')
+    }
+
+    try {
+        await deleteListing(listingId)
+        res.redirect('/catalog')
+    } catch (err) {
+        console.log(err);
+        const errors = mapErrors(err);
+        res.render('details', { title: 'Details Page', errors, listing })
+    }
 })
 
 module.exports = router

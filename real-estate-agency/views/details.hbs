@@ -14,7 +14,7 @@
                     <p>Description: {{description}}</p>
                     {{#if rents}}
                     <!-- if there are already tenants of the housing, separate their names with a comma and a space ", "  -->
-                    <p>People rented this housing: Alex Petkov, Ivan Dobrev</p>
+                    <p>People rented this housing: {{#each rents}}{{name}}, {{/each}}</p>
                     {{else}}
                     <!-- If not display: -->
                     <p>People rented this housing: There are no tenants yet.</p>
