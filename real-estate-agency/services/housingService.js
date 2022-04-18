@@ -1,4 +1,6 @@
 const Housing = require('../models/Housing')
+const User = require('../models/User')
+
 
 async function getListings() {
     return Housing.find({}).lean()
@@ -43,6 +45,30 @@ async function deleteListing(id) {
     return Housing.findByIdAndDelete(id)
 }
 
+async function search(query) {
+    if (query.search) {
+        const search = new RegExp(query.search, 'i')
+
+        return Housing.find({ type: search }).lean()
+    }
+    return Housing.find({ type: 'something' }).lean()
+
+}
+
+async function rentHouse(homeId, userId) {
+    const listing = await Housing.findById(homeId)
+    const user = await User.findById(userId)
+
+    if (listing.rents.includes(user)) {
+        throw new Error('User has already rented this house')
+    }
+
+    listing.rents.push(user)
+    listing.pieces -= 1;
+
+    await listing.save()
+}
+
 
 
 module.exports = {
@@ -52,4 +78,6 @@ module.exports = {
     getListingById,
     editListing,
     deleteListing,
+    search,
+    rentHouse
 }

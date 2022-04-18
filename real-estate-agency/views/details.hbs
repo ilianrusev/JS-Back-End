@@ -36,7 +36,7 @@
                 <p class="alRentHome">You have already rent this home</p>
                 {{else}}
                 {{#if hasSpace}}
-                <a href="#" class="rentHome">Rent a home, available {{pieces}} housing</a>
+                <a href="/rent/{{_id}}" class="rentHome">Rent a home, available {{pieces}} housing</a>
 
                 {{else}}
                 <!-- logged in user with no available pieces-->

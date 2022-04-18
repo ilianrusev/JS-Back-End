@@ -1,14 +1,15 @@
-const { createListing, getListings, getListingById, editListing, deleteListing } = require('../services/housingService');
+const { isUser } = require('../middleware/guards');
+const { createListing, getListings, getListingById, editListing, deleteListing, rentHouse } = require('../services/housingService');
 const mapErrors = require('../util/errorMapper');
 
 const router = require('express').Router();
 
 
-router.get('/create', (req, res) => {
+router.get('/create', isUser(), (req, res) => {
     res.render('create', { title: 'Create Page' })
 })
 
-router.post('/create', async (req, res) => {
+router.post('/create', isUser(), async (req, res) => {
     const userId = req.session.user._id;
 
     const listing = {
@@ -60,7 +61,7 @@ router.get('/details/:id', async (req, res) => {
 
 })
 
-router.get('/edit/:id', async (req, res) => {
+router.get('/edit/:id', isUser(), async (req, res) => {
     const listingId = req.params.id
     const listing = await getListingById(listingId)
 
@@ -71,7 +72,7 @@ router.get('/edit/:id', async (req, res) => {
     res.render('edit', { title: 'Edit Page', listing })
 })
 
-router.post('/edit/:id', async (req, res) => {
+router.post('/edit/:id', isUser(), async (req, res) => {
     const listingId = req.params.id
     const existing = await getListingById(listingId)
 
@@ -115,6 +116,20 @@ router.get('/delete/:id', async (req, res) => {
         console.log(err);
         const errors = mapErrors(err);
         res.render('details', { title: 'Details Page', errors, listing })
+    }
+})
+
+router.get('/rent/:id', async (req, res) => {
+    const listingId = req.params.id
+    const userId = req.session.user._id
+
+    try {
+        await rentHouse(listingId, userId)
+        res.redirect('/details/' + listingId)
+    } catch (err) {
+        console.log(err);
+        const errors = mapErrors(err)
+        res.render('404', { title: '404' })
     }
 })
 

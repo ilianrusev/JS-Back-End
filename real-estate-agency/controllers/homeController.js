@@ -1,3 +1,4 @@
+const { isUser } = require('../middleware/guards');
 const { getLastListings } = require('../services/housingService');
 
 const router = require('express').Router();

@@ -1,11 +1,20 @@
 const { Schema, model } = require('mongoose')
 
+const NAME_PATTERN = /([A-Z][a-z]+[ ]{1}[A-Z][a-z]+)/gm
 
 const userSchema = new Schema({
-    name: { type: String, required: [true, 'Name is required'] },
+    name: {
+        type: String,
+        required: [true, 'Name is required'], validate: {
+            validator(value) {
+                return NAME_PATTERN.test(value)
+            },
+            message: 'Name must be in correct format.'
+        }
+    },
     username: {
         type: String,
-        required: [true, 'Usrname is required.'],
+        minLength: [5, 'Usrname must be at least 5 characters long!'],
     },
     hashedPassword: { type: String, required: true }
 })
