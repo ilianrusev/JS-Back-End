@@ -11,6 +11,10 @@ router.get('/create', isUser(), (req, res) => {
 router.post('/create', isUser(), async (req, res) => {
     const userId = req.session.user._id;
 
+    if (req.body.certificate != "Yes" || req.body.certificate != "No") {
+        throw new Error('Wrong certificate value. Type "Yes" or "No"')
+    }
+
     const publication = {
         name: req.body.name,
         technique: req.body.technique,

@@ -13,6 +13,9 @@ router.post('/register', isGuest(), async (req, res) => {
         if (req.body.password.trim() == '') {
             throw new Error('Please enter password')
         }
+        if (req.body.password.trim().length < 3) {
+            throw new Error('Password must be at least 3 characters long')
+        }
         if (req.body.password != req.body.repass) {
             throw new Error('passwords are not the same')
         }

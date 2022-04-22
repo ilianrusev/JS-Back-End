@@ -1,4 +1,6 @@
+const { isUser } = require('../middleware/guards');
 const { getAll } = require('../services/publication');
+const { getUserById } = require('../services/user');
 
 const router = require('express').Router();
 
@@ -13,8 +15,10 @@ router.get('/gallery', async (req, res) => {
     res.render('gallery', { title: 'Gallery', publications })
 })
 
-router.get('/profile', async (req, res) => {
-    res.render('profile', { title: 'Profile Page'})
+router.get('/profile', isUser(), async (req, res) => {
+    const userId = req.session.user._id
+    const user = await getUserById(uderId)
+    res.render('profile', { title: 'Profile Page', user })
 })
 
 
