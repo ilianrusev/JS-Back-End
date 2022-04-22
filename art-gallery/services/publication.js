@@ -18,6 +18,17 @@ async function getPubById(id) {
         .lean()
 }
 
+async function editPub(id, publication) {
+    const existing = Publication.findById(id);
+
+    existing.name = publication.name
+    existing.technique = publication.technique
+    existing.picture = publication.picture
+    existing.certificate = publication.certificate
+
+    await existing.save()
+}
+
 async function deletePub(id) {
     return Publication.findByIdAndDelete(id)
 }
@@ -27,4 +38,5 @@ module.exports = {
     createPub,
     getPubById,
     deletePub,
+    editPub,
 }
