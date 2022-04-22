@@ -1,4 +1,5 @@
-const Publication = require('../models/Publication')
+const Publication = require('../models/Publication');
+const { getUserById } = require('./user');
 
 async function getAll() {
     return Publication.find({}).lean()
@@ -29,6 +30,16 @@ async function editPub(id, publication) {
     await existing.save()
 }
 
+async function sharePub(userId, pubId) {
+    const existing = await Publication.findById(pubId);
+    const user = await getUserById(userId);
+
+    existing.sharedUsers.push(user);
+
+    await existing.save()
+
+}
+
 async function deletePub(id) {
     return Publication.findByIdAndDelete(id)
 }
@@ -39,4 +50,5 @@ module.exports = {
     getPubById,
     deletePub,
     editPub,
+    sharePub,
 }

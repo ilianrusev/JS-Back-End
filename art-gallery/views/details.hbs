@@ -19,9 +19,13 @@
                 {{/if }}
                 <!-- logged in user who has not yet shared the publication-->
                 {{#if notAuthor}}
-                <a href="#" class="btn-share">Share publication</a>
-                <!-- logged in user who has already shared the publication-->
+                {{#if hasShared}}
                 <p class="shared-pub">You already shared this publication</p>
+
+                {{else}}
+                <a href="/share/{{_id}}" class="btn-share">Share publication</a>
+
+                {{/if}}
                 {{/if}}
             </div>
             {{/if}}

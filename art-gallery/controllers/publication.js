@@ -1,5 +1,5 @@
 const { isUser } = require('../middleware/guards');
-const { createPub, getPubById, editPub, deletePub } = require('../services/publication');
+const { createPub, getPubById, editPub, deletePub, sharePub } = require('../services/publication');
 const { addPublication } = require('../services/user');
 const mapErrors = require('../util/errorMapper');
 
@@ -51,6 +51,7 @@ router.get('/details/:id', async (req, res) => {
             publication.isAuthor = true;
         } else {
             publication.notAuthor = true;
+            publication.hasShared = publication.sharedUsers.find(v => v._id == req.session.user._id) != undefined;
         }
     }
 
@@ -93,6 +94,14 @@ router.post('/edit/:id', isUser(), async (req, res) => {
         publication._id = id
         res.render('edit', { title: 'Edit Page', publication, errors })
     }
+})
+
+router.get('/share/:id', isUser(), async (req, res) => {
+    const pubId = req.params.id
+    const userId = req.session.user._id
+
+    await sharePub(userId, pubId)
+    res.redirect('/details/' + pubId)
 })
 
 router.get('/delete/:id', isUser(), async (req, res) => {

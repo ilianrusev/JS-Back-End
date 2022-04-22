@@ -6,6 +6,9 @@ const router = require('express').Router();
 
 router.get('/', async (req, res) => {
     const publications = await getAll()
+    publications.forEach(p => {
+            p.count = p.sharedUsers.length
+    })
     res.render('home', { title: 'Home Page', publications })
 })
 
