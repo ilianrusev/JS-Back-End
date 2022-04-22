@@ -7,7 +7,7 @@ const router = require('express').Router();
 router.get('/', async (req, res) => {
     const publications = await getAll()
     publications.forEach(p => {
-            p.count = p.sharedUsers.length
+        p.count = p.sharedUsers.length
     })
     res.render('home', { title: 'Home Page', publications })
 })
@@ -21,7 +21,6 @@ router.get('/gallery', async (req, res) => {
 router.get('/profile', isUser(), async (req, res) => {
     const userId = req.session.user._id
     const user = await getUserById(userId)
-    console.log(user);
     res.render('profile', { title: 'Profile Page', user })
 })
 

@@ -2,7 +2,9 @@ const Publication = require('../models/Publication');
 const { getUserById } = require('./user');
 
 async function getAll() {
-    return Publication.find({}).lean()
+    return Publication.find({})
+        .populate('sharedUsers')
+        .lean()
 }
 
 async function createPub(publication) {
