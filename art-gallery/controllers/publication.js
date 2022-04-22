@@ -1,5 +1,6 @@
 const { isUser } = require('../middleware/guards');
-const { createPub, getPubById, editPub } = require('../services/publication');
+const { createPub, getPubById, editPub, deletePub } = require('../services/publication');
+const mapErrors = require('../util/errorMapper');
 
 const router = require('express').Router();
 
@@ -40,7 +41,6 @@ router.get('/details/:id', async (req, res) => {
             publication.notAuthor = true;
         }
     }
-    console.log(publication);
 
 
     res.render('details', { title: 'Details Page', publication })
@@ -50,7 +50,7 @@ router.get('/edit/:id', isUser(), async (req, res) => {
     const id = req.params.id;
     const publication = await getPubById(id)
 
-    if (req.session.user._id != trip.creator._id) {
+    if (req.session.user._id != publication.author._id) {
         return res.redirect('/login')
     }
 
@@ -61,7 +61,7 @@ router.post('/edit/:id', isUser(), async (req, res) => {
     const id = req.params.id;
     const existing = await getPubById(id)
 
-    if (req.session.user._id != trip.creator._id) {
+    if (req.session.user._id != existing.author._id) {
         return res.redirect('/login')
     }
 
@@ -81,6 +81,25 @@ router.post('/edit/:id', isUser(), async (req, res) => {
         publication._id = id
         res.render('edit', { title: 'Edit Page', data: publication, errors })
     }
+})
+
+router.get('/delete/:id', isUser(), async (req, res) => {
+    const id = req.params.id
+    const publication = await getPubById(id)
+
+    if (req.session.user._id != publication.author._id) {
+        return res.redirect('/login')
+    }
+
+    try {
+        await deletePub(id);
+        res.redirect('/gallery')
+    } catch (err) {
+        console.log(err);
+        const errors = mapErrors(err)
+        res.render('details', { title: 'Details Page', errors, publication })
+    }
+
 })
 
 module.exports = router

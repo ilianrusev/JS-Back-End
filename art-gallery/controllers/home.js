@@ -13,5 +13,9 @@ router.get('/gallery', async (req, res) => {
     res.render('gallery', { title: 'Gallery', publications })
 })
 
+router.get('/profile', async (req, res) => {
+    res.render('profile', { title: 'Profile Page'})
+})
+
 
 module.exports = router

@@ -19,7 +19,7 @@ async function getPubById(id) {
 }
 
 async function editPub(id, publication) {
-    const existing = Publication.findById(id);
+    const existing = await Publication.findById(id);
 
     existing.name = publication.name
     existing.technique = publication.technique

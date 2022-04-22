@@ -1,4 +1,4 @@
-const { Schema, model } = require('mongoose')
+const { Schema, model, Types: { ObjectId } } = require('mongoose')
 
 
 
@@ -11,6 +11,7 @@ const userSchema = new Schema({
         type: String,
         required: [true, 'Address is required.'],
     },
+    publications: { type: [ObjectId], ref: 'Publication', default: [] },
     hashedPassword: { type: String, required: true }
 })
 
