@@ -10,14 +10,14 @@ module.exports = (app) => {
 
     app.set('view engine', '.hbs');
 
-    app.use('/static/', express.static('static'))
+    app.use('/style/', express.static('style'))
 
     app.use(session({
         secret: 'secret',
         resave: false,
         saveUninitialized: true,
         cookie: {
-            secure: auto,
+            secure: 'auto'
         }
     }));
 
