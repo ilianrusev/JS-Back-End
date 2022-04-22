@@ -1,5 +1,6 @@
 const { isUser } = require('../middleware/guards');
 const { createPub, getPubById, editPub, deletePub } = require('../services/publication');
+const { addPublication } = require('../services/user');
 const mapErrors = require('../util/errorMapper');
 
 const router = require('express').Router();
@@ -11,10 +12,6 @@ router.get('/create', isUser(), (req, res) => {
 router.post('/create', isUser(), async (req, res) => {
     const userId = req.session.user._id;
 
-    if (req.body.certificate != "Yes" || req.body.certificate != "No") {
-        throw new Error('Wrong certificate value. Type "Yes" or "No"')
-    }
-
     const publication = {
         name: req.body.name,
         technique: req.body.technique,
@@ -24,12 +21,23 @@ router.post('/create', isUser(), async (req, res) => {
     }
 
     try {
+        if (req.body.certificate != "Yes" || req.body.certificate != "No") {
+            if (req.body.certificate == 'yes') {
+                publication.certificate = "Yes"
+            } else if (req.body.certificate == 'no') {
+                publication.certificate = "No"
+            } else {
+                throw new Error('Wrong certificate value. Type "Yes" or "No"')
+            }
+        }
+
         const newPub = await createPub(publication)
+        await addPublication(userId, newPub)
         res.redirect('/gallery')
     } catch (err) {
         console.log(err);
         const errors = mapErrors(err)
-        res.render('create', { title: 'Create Page', errors, data: publication })
+        res.render('create', { title: 'Create Page', errors, publication })
     }
 })
 
@@ -58,7 +66,7 @@ router.get('/edit/:id', isUser(), async (req, res) => {
         return res.redirect('/login')
     }
 
-    res.render('edit', { title: 'Edit Page', data: publication })
+    res.render('edit', { title: 'Edit Page', publication })
 })
 
 router.post('/edit/:id', isUser(), async (req, res) => {
@@ -83,7 +91,7 @@ router.post('/edit/:id', isUser(), async (req, res) => {
         console.log(err);
         const errors = mapErrors(err)
         publication._id = id
-        res.render('edit', { title: 'Edit Page', data: publication, errors })
+        res.render('edit', { title: 'Edit Page', publication, errors })
     }
 })
 

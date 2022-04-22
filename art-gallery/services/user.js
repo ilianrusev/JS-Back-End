@@ -45,9 +45,17 @@ async function getUserByUsername(username) {
 
 async function getUserById(id) {
     const user = await User.findById(id)
+        .populate('publications', 'name technique picture certificate sharedUsers ')
         .lean()
 
     return user;
+}
+
+async function addPublication(userId, publication) {
+    const user = await User.findById(userId)
+    user.publications.push(publication)
+
+    await user.save();
 }
 
 
@@ -55,5 +63,6 @@ async function getUserById(id) {
 module.exports = {
     login,
     register,
-    getUserById
+    getUserById,
+    addPublication
 }
