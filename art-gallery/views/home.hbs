@@ -11,10 +11,9 @@
 
         <!--If there are publications in the database, show the following view for each created publication-->
         {{#if publications}}
-
-        {{>publication}}
-
-
+        {{#each publications}}
+        {{>publicationHome}}
+        {{/each}}
         {{else}}
         <!--If there are no publications yet, show:-->
         <article class="no-publication">

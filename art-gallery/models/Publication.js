@@ -2,7 +2,7 @@ const { Schema, model, Types: { ObjectId } } = require('mongoose')
 
 
 const publicationSchemna = new Schema({
-    title: { type: String, required: true },
+    name: { type: String, required: true },
     technique: { type: String, required: true },
     picture: { type: String, required: true },
     certificate: { type: String, required: true },
